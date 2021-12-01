@@ -5,6 +5,7 @@ increments = -1
 last = 0
 for line in lines:
     if line > last:
+        print(line)
         last = line
         increments += 1
 
