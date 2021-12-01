@@ -13,12 +13,11 @@ def part1():
 
 
 def part2():
-    increments = -1
-    last = 0
-    curr = 0
+    increments = 0
+    last = lines[0]
     window = [0, 0, 0]
     for line in lines:
-        curr -= window[0]
+        curr = last - window[0]
         window[0] = window[1]
         window[1] = window[2]
         window[2] = line
