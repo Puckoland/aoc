@@ -14,7 +14,7 @@ def part1():
 
 def part2():
     increments = 0
-    last = lines[0]
+    last = 0
     window = [0, 0, 0]
     for line in lines:
         curr = last - window[0]
