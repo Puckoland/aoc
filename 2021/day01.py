@@ -23,9 +23,10 @@ def part2():
         window[1] = window[2]
         window[2] = line
         curr += line
+        print(curr, last)
         
         if curr > last:
-            print(curr, last)
+            print("yes")
             increments += 1
         last = curr
     print(increments)
