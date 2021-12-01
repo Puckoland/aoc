@@ -25,6 +25,7 @@ def part2():
         curr += line
         
         if curr > last:
+            print(curr, last)
             increments += 1
         last = curr
     print(increments)
