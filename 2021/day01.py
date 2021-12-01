@@ -13,20 +13,17 @@ def part1():
 
 
 def part2():
-    increments = -1
-    last = 0
-    window = [0, 0, 0]
+    increments = 0
+    window = [lines[0], lines[1], lines[2]]
+    last = sum(window)
     for line in lines:
         curr = last - window[0]
         window[0] = window[1]
         window[1] = window[2]
         window[2] = line
         curr += line
-        print(window)
-        print(curr, last)
 
         if curr > last:
-            print("yes")
             increments += 1
         last = curr
     print(increments)
