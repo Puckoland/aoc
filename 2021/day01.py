@@ -18,12 +18,12 @@ def part2():
     curr = 0
     window = [0, 0, 0]
     for line in lines:
-        print(window)
         curr -= window[0]
         window[0] = window[1]
         window[1] = window[2]
         window[2] = line
         curr += line
+        print(window)
         print(curr, last)
 
         if curr > last:
