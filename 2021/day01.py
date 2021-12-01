@@ -1,27 +1,27 @@
 lines = open('input.txt', 'r').read().splitlines()
-lines = list(map(lambda x: int(x), lines))
+numbers = list(map(lambda x: int(x), lines))
 
 
 def part1():
     increments = 0
-    last = lines[0]
-    for line in lines:
-        if line > last:
+    last = numbers[0]
+    for number in numbers:
+        if number > last:
             increments += 1
-        last = line
+        last = number
     print(increments)
 
 
 def part2():
     increments = 0
-    window = [lines[0], lines[1], lines[2]]
+    window = [numbers[0], numbers[1], numbers[2]]
     last = sum(window)
-    for line in lines:
+    for number in numbers:
         curr = last - window[0]
         window[0] = window[1]
         window[1] = window[2]
-        window[2] = line
-        curr += line
+        window[2] = number
+        curr += number
 
         if curr > last:
             increments += 1
