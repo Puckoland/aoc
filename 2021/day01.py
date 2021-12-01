@@ -13,7 +13,7 @@ def part1():
 
 
 def part2():
-    increments = 0
+    increments = -1
     last = 0
     window = [0, 0, 0]
     for line in lines:
