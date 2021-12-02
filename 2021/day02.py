@@ -10,7 +10,8 @@ def part1():
     depth = 0
     for line in lines:
         line.split(' ')
-        command, int(num) = line
+        command, num = line
+        num = int(num)
         if command == FORWARD:
             x += num
         elif command == UP:
