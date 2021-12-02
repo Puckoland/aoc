@@ -38,4 +38,4 @@ def part2():
 
 
 part1()
-part(2)
+part2()
