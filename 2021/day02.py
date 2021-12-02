@@ -20,4 +20,22 @@ def part1():
     print(x * depth)
 
 
+def part2():
+    x = 0
+    depth = 0
+    aim = 0
+    for line in lines:
+        command, num = line.split(' ')
+        num = int(num)
+        if command == FORWARD:
+            x += num
+            depth += aim * num
+        elif command == UP:
+            aim -= num
+        elif command == DOWN:
+            aim += num
+    print(x * depth)
+
+
 part1()
+part(2)
