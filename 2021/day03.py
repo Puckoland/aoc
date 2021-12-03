@@ -26,25 +26,23 @@ def parse_num(bits):
     return number
 
 
-def most_common(data, bit_position):
+def most_common(data, bit_position, preferred):
     num_of_lines_half = len(data) / 2
     ones = 0
     for entry in data:
         ones += entry[bit_position]
-    return 1 if ones > num_of_lines_half else 0 if ones < num_of_lines_half else 3
+    return 1 if ones > num_of_lines_half else 0 if ones < num_of_lines_half else preferred
 
 
-def least_common(data, bit_position):
-    return 1 - most_common(data, bit_position)
+def least_common(data, bit_position, preferred):
+    return 1 - most_common(data, bit_position, 1 - preferred)
 
 
 def rating(preferred, f):
     lines_copy = lines.copy()
     while len(lines_copy) > 1:
         for pos in range(num_of_bits):
-            bit_to_preserve = f(lines_copy, pos)
-            if bit_to_preserve != 0 and bit_to_preserve != 1:
-                bit_to_preserve = preferred
+            bit_to_preserve = f(lines_copy, pos, preferred)
             lines_copy = list(filter(lambda line: line[pos] == bit_to_preserve, lines_copy))
             if len(lines_copy) == 1:
                 break
