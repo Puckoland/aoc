@@ -1,14 +1,15 @@
 lines = open('input.txt', 'r').read().splitlines()
+lines = list(map(lambda line: [int(c) for c in line], lines))
+
+num_of_bits = len(lines[0])
+num_of_lines = len(lines)
 
 
 def part1():
-    num_of_bits = len(lines[0])
-    num_of_lines = 0
     ones = [0] * num_of_bits
     for line in lines:
-        num_of_lines += 1
         for i in range(num_of_bits):
-            ones[i] += int(line[i])
+            ones[i] += line[i]
     gamma = 0
     epsilon = 0
     for i in range(num_of_bits):
@@ -18,4 +19,43 @@ def part1():
     print(gamma * epsilon)
 
 
+def parse_num(bits):
+    number = 0
+    for bit in bits:
+        number = (number << 1) | bit
+    return number
+
+
+def most_common(data, bit_position):
+    num_of_lines_half = len(data) / 2
+    ones = 0
+    for entry in data:
+        ones += entry[bit_position]
+    return 1 if ones > num_of_lines_half else 0 if ones < num_of_lines_half else 3
+
+
+def least_common(data, bit_position):
+    return 1 - most_common(data, bit_position)
+
+
+def rating(preferred, f):
+    lines_copy = lines.copy()
+    while len(lines_copy) > 1:
+        for pos in range(num_of_bits):
+            bit_to_preserve = f(lines_copy, pos)
+            if bit_to_preserve != 0 and bit_to_preserve != 1:
+                bit_to_preserve = preferred
+            lines_copy = list(filter(lambda line: line[pos] == bit_to_preserve, lines_copy))
+            if len(lines_copy) == 1:
+                break
+    return parse_num(lines_copy[0])
+
+
+def part2():
+    oxygen_rating = rating(1, most_common)
+    co2_rating = rating(0, least_common)
+    print(oxygen_rating * co2_rating)
+
+
 part1()
+part2()
