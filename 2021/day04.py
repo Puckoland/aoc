@@ -26,20 +26,21 @@ def remove_drawn(board, draw):
 
 
 def evaluate(boards):
+    winnings = []
     for board in boards:
         winning_column = [True] * BOARD_SIZE
-        for (y, line) in enumerate(board):
+        for (x, line) in enumerate(board):
             winning_line = True
-            for (x, num) in enumerate(line):
+            for (y, num) in enumerate(line):
                 if num != MARK:
                     winning_column[y] = False
                     winning_line = False
-                    break
             if winning_line:
-                return board
-        if True in winning_column:
-            return board
-    return None
+                winnings.append(board)
+                break
+        if board not in winnings and True in winning_column:
+            winnings.append(board)
+    return winnings
 
 
 def get_result(board, draw):
@@ -48,7 +49,7 @@ def get_result(board, draw):
         for num in line:
             if num != MARK:
                 suma += num
-    print(suma * draw)
+    return suma * draw
 
 
 def part1():
@@ -57,9 +58,22 @@ def part1():
     for draw in draws:
         for board in boards:
             remove_drawn(board, draw)
-        winning = evaluate(boards)
-        if winning is not None:
-            return get_result(winning, draw)
+        for winning in evaluate(boards):
+            return print(get_result(winning, draw))
+
+
+def part2():
+    draws = parse_ints(lines[0].split(','))
+    boards = parse_boards()
+    last_winning = 0
+    for draw in draws:
+        for board in boards:
+            remove_drawn(board, draw)
+        for winning in evaluate(boards):
+            last_winning = get_result(winning, draw)
+            boards.remove(winning)
+    print(last_winning)
 
 
 part1()
+part2()
