@@ -10,4 +10,16 @@ def part1():
     print(suma)
 
 
+def part2():
+    sums = []
+    for i in range(max(nums)):
+        suma = 0
+        for num in nums:
+            diff = abs(num - i)
+            suma += (diff + 1) * diff // 2
+        sums.append(suma)
+    print(min(sums))
+
+
 part1()
+part2()
