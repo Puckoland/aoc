@@ -21,18 +21,18 @@ def get_missing(word):
     return chars
 
 
-def get_a_from_seven_and_one(mapa):
-    seven = mapa[3][0][:]
-    for c in mapa[2][0]:
+def get_a_from_seven_and_one(words_by_length):
+    seven = words_by_length[3][0][:]
+    for c in words_by_length[2][0]:
         seven.remove(c)
     return seven[0]
 
 
-def get_d_from_zero(mapa):
-    for potential in mapa[6]:
+def get_d_from_zero(words_by_length):
+    for potential in words_by_length[6]:
         missing = get_missing(potential)[0]
         found = True
-        for five_len in mapa[5]:
+        for five_len in words_by_length[5]:
             if missing not in five_len:
                 found = False
                 break
@@ -110,10 +110,7 @@ def get_alphabet(entry):
 
 
 def part2():
-    suma = 0
-    for entry in entries:
-        suma += decipher_output(entry[1], get_alphabet(entry[0]))
-    print(suma)
+    print(sum([decipher_output(entry[1], get_alphabet(entry[0])) for entry in entries]))
 
 
 part1()
