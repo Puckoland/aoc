@@ -8,26 +8,14 @@ STEPS = 100
 
 def get_adjacent(y, x):
     adjacent = []
-    if y > 0:
-        adjacent.append((y - 1, x))
-        if x > 0:
-            adjacent.append((y - 1, x - 1))
-        if x < SIZE_X - 1:
-            adjacent.append((y - 1, x + 1))
-    if x > 0:
-        adjacent.append((y, x - 1))
-    if y < SIZE_Y - 1:
-        adjacent.append((y + 1, x))
-        if x > 0:
-            adjacent.append((y + 1, x - 1))
-        if x < SIZE_X - 1:
-            adjacent.append((y + 1, x + 1))
-    if x < SIZE_X - 1:
-        adjacent.append((y, x + 1))
+    for dy in range(-1 if y > 0 else 0, 2 if y < SIZE_Y - 1 else 1):
+        for dx in range(-1 if x > 0 else 0, 2 if x < SIZE_X - 1 else 1):
+            if dx != 0 or dy != 0:
+                adjacent.append((y + dy, x + dx))
     return adjacent
 
 
-def light(nums, coor, lighted, count):
+def add_one(nums, coor, lighted, count):
     y, x = coor
     if (y, x) in lighted:
         return count
@@ -37,7 +25,7 @@ def light(nums, coor, lighted, count):
     nums[y][x] = 0
     lighted.append((y, x))
     for adj in get_adjacent(y, x):
-        count = light(nums, adj, lighted, count)
+        count = add_one(nums, adj, lighted, count)
     return count + 1
 
 
@@ -45,7 +33,7 @@ def step(nums, count):
     lighted = []
     for y in range(len(nums)):
         for x in range(len(nums)):
-            count = light(nums, (y, x), lighted, count)
+            count = add_one(nums, (y, x), lighted, count)
     return count
 
 
@@ -59,12 +47,11 @@ def part1():
 
 def part2():
     nums = list(map(lambda x: [int(c) for c in x], lines))
-    count = 0
     steps = 0
-    while not False:
+    while True:
         steps += 1
-        step(nums, count)
-        if sum(list(map(lambda x: sum(x), nums))) == 0:
+        count = step(nums, 0)
+        if count == SIZE_Y * SIZE_X:
             print(steps)
             return
 
