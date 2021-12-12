@@ -7,6 +7,7 @@ class Vertex:
         self.id = key
         self.neighbours = []
         self.visited = False
+        self.visited_double = False
         self.small = key.islower()
 
     def add_neighbor(self, nbr):
@@ -54,6 +55,29 @@ def dfs(vertex):
     return paths
 
 
+def dfs2(vertex, double_used):
+    paths = []
+    if vertex.visited:
+        if double_used or vertex.id == 'start':
+            return []
+        double_used = True
+        vertex.visited_double = True
+    if vertex.small:
+        vertex.visited = True
+    if vertex.id == 'end':
+        vertex.visited = False
+        return [['end']]
+    for neighbour in vertex.neighbours:
+        for p in dfs2(neighbour, double_used):
+            p.append(vertex.id)
+            paths.append(p)
+    if vertex.visited_double:
+        vertex.visited_double = False
+    else:
+        vertex.visited = False
+    return paths
+
+
 def create_graph():
     graph = Graph()
     for edge in edges:
@@ -68,7 +92,7 @@ def part1():
 
 
 def part2():
-    pass
+    print(len(dfs2(create_graph().vertices['start'], False)))
 
 
 part1()
