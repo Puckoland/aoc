@@ -13,9 +13,6 @@ class Vertex:
     def add_neighbor(self, nbr):
         self.neighbours.append(nbr)
 
-    def __str__(self):
-        return str(self.id) + " " + str(self.visited)
-
 
 class Graph:
     def __init__(self):
@@ -33,9 +30,6 @@ class Graph:
             self.add_vertex(t)
         self.vertices[f].add_neighbor(self.vertices[t])
         self.vertices[t].add_neighbor(self.vertices[f])
-
-    def __str__(self):
-        return str([str(ver) for ver in self.vertices.values()])
 
 
 def dfs(vertex):
@@ -92,7 +86,9 @@ def part1():
 
 
 def part2():
-    print(len(dfs2(create_graph().vertices['start'], False)))
+    graph = create_graph()
+    paths = dfs2(graph.vertices['start'], False)
+    print(len(paths))
 
 
 part1()
