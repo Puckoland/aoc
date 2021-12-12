@@ -1,6 +1,9 @@
 lines = open('input.txt').read().splitlines()
 edges = list(map(lambda x: x.split('-'), lines))
 
+START = "start"
+END = "end"
+
 
 class Vertex:
     def __init__(self, key):
@@ -19,9 +22,7 @@ class Graph:
         self.vertices = {}
 
     def add_vertex(self, key):
-        new_vertex = Vertex(key)
-        self.vertices[key] = new_vertex
-        return new_vertex
+        self.vertices[key] = Vertex(key)
 
     def add_edge(self, f, t):
         if f not in self.vertices:
@@ -35,16 +36,16 @@ class Graph:
 def dfs(vertex):
     paths = []
     if vertex.visited:
-        return []
+        return paths
     if vertex.small:
         vertex.visited = True
-    if vertex.id == 'end':
+    if vertex.id == END:
         vertex.visited = False
-        return [['end']]
+        return [[END]]
     for neighbour in vertex.neighbours:
-        for p in dfs(neighbour):
-            p.append(vertex.id)
-            paths.append(p)
+        for path in dfs(neighbour):
+            path.append(vertex.id)
+            paths.append(path)
     vertex.visited = False
     return paths
 
@@ -52,19 +53,19 @@ def dfs(vertex):
 def dfs2(vertex, double_used):
     paths = []
     if vertex.visited:
-        if double_used or vertex.id == 'start':
-            return []
+        if double_used or vertex.id == START:
+            return paths
         double_used = True
         vertex.visited_double = True
     if vertex.small:
         vertex.visited = True
-    if vertex.id == 'end':
+    if vertex.id == END:
         vertex.visited = False
-        return [['end']]
+        return [[END]]
     for neighbour in vertex.neighbours:
-        for p in dfs2(neighbour, double_used):
-            p.append(vertex.id)
-            paths.append(p)
+        for path in dfs2(neighbour, double_used):
+            path.append(vertex.id)
+            paths.append(path)
     if vertex.visited_double:
         vertex.visited_double = False
     else:
@@ -81,13 +82,13 @@ def create_graph():
 
 def part1():
     graph = create_graph()
-    paths = dfs(graph.vertices['start'])
+    paths = dfs(graph.vertices[START])
     print(len(paths))
 
 
 def part2():
     graph = create_graph()
-    paths = dfs2(graph.vertices['start'], False)
+    paths = dfs2(graph.vertices[START], False)
     print(len(paths))
 
 
