@@ -1,12 +1,10 @@
 coors, folds = open('input.txt').read().split("\n\n")
 coors = coors.splitlines()
-coors = list(map(lambda x: x.split(','), coors))
+coors = map(lambda x: x.split(','), coors)
 coors = list(map(lambda x: (int(x[1]), int(x[0])), coors))
 folds = folds.splitlines()
-fold_y = int(folds[0].split('=')[1])
-fold_x = int(folds[1].split('=')[1])
 
-SIZE = 15
+SIZE = 1500
 
 
 def fold_by_y(page, y):
@@ -41,19 +39,17 @@ def part1():
     page = [[0 for _ in range(SIZE)] for _ in range(SIZE)]
     for y, x in coors:
         page[y][x] = 1
-    # for line in page:
-    #     print(line)
-    print("FOLDING")
-    page = fold_by_y(page, fold_y)
-    page = fold_by_x(page, fold_x)
-    for line in page:
-        print(line)
+    for fold in folds:
+        if 'y' in fold:
+            page = fold_by_y(page, int(fold.split('=')[1]))
+        else:
+            page = fold_by_x(page, int(fold.split('=')[1]))
     print(sum([sum(line) for line in page]))
-
-
-def part2():
-    pass
+    for line in page:
+        text = ""
+        for x in range(len(line)):
+            text += ' #'[line[x]]
+        print(text)
 
 
 part1()
-part2()
