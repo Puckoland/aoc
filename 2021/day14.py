@@ -1,5 +1,5 @@
 lines = open('input.txt').read().splitlines()
-start = lines[0]
+template = lines[0]
 rules = dict(map(lambda x: x.split(" -> "), lines[2:]))
 
 
@@ -8,49 +8,42 @@ def change_rules():
         rules[key] = key[0] + rules[key], rules[key] + key[1]
 
 
-def reduce_rules():
-    for key in rules:
-        fi = key[0] + rules[key]
-        se = rules[key] + key[1]
-        rules[key] = key[0] + rules[fi] + rules[key] + rules[se]
-
-
-def get_result(template):
-    # First letter
-    counts = {start[0]: 1}
-    for key in template:
-        se = key[1]
-        if se in counts:
-            counts[se] += template[key]
+def get_result(pair_counts):
+    # Add first letter
+    letters = {template[0]: 1}
+    for key in pair_counts:
+        second = key[1]
+        if second in letters:
+            letters[second] += pair_counts[key]
         else:
-            counts[se] = template[key]
-    return counts[max(counts, key=counts.get)] - counts[min(counts, key=counts.get)]
+            letters[second] = pair_counts[key]
+    return letters[max(letters, key=letters.get)] - letters[min(letters, key=letters.get)]
 
 
 def do(steps):
-    template = {}
-    for i in range(len(start) - 1):
-        pair = start[i] + start[i + 1]
-        if pair in template:
-            template[pair] += 1
+    pair_counts = {}
+    for i in range(len(template) - 1):
+        pair = template[i] + template[i + 1]
+        if pair in pair_counts:
+            pair_counts[pair] += 1
         else:
-            template[pair] = 1
+            pair_counts[pair] = 1
     for _ in range(steps):
-        new_tem = {}
-        for pair in template:
-            count = template[pair]
-            fi = rules[pair][0]
-            se = rules[pair][1]
-            if fi in new_tem:
-                new_tem[fi] += count
+        new_counts = {}
+        for pair in pair_counts:
+            count = pair_counts[pair]
+            first = rules[pair][0]
+            second = rules[pair][1]
+            if first in new_counts:
+                new_counts[first] += count
             else:
-                new_tem[fi] = count
-            if se in new_tem:
-                new_tem[se] += count
+                new_counts[first] = count
+            if second in new_counts:
+                new_counts[second] += count
             else:
-                new_tem[se] = count
-        template = new_tem
-    print(get_result(template))
+                new_counts[second] = count
+        pair_counts = new_counts
+    print(get_result(pair_counts))
 
 
 def part1():
